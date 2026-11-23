@@ -1,0 +1,3 @@
+auto_detect_filter_variables: true
+to_include_evaluation: [gender, race, challenge_zone, capture_device, quality_band]
+to_include_audit: [gender, race, challenge_zone, capture_device, quality_band]

@@ -1,0 +1,55 @@
+# Case-study / field-of-study metric label aliases (spec §3.7).
+#
+# The selector rewrites metric NAMES to the convention of a profile. Keys are
+# metric ids (matching metrics.yaml); values are the label to show in that
+# profile. Any metric id not listed keeps its canonical label. Aliases NEVER
+# change the underlying math — internal keys stay stable and in English.
+# "generic"/"general" is the identity (canonical labels) and is omitted.
+#
+# Consumed by shared/assets/domain.js (bundled with the profile label map).
+
+# ISO/IEC 19795 verification terminology, with positive class = impostor:
+# far (positives accepted as genuine) = FMR; frr (genuine rejected) = FNMR.
+biometric_verification:
+  far: "FMR"
+  frr: "FNMR"
+  fpr: "FNMR"
+  recall: "TPR (1−FMR)"
+  precision: "PPV"
+  specificity: "TAR (1−FNMR)"
+
+presentation_attack_detection:   # ISO/IEC 30107 PAD terminology
+  far: "APCER"
+  frr: "BPCER"
+  hter: "ACER"
+  fpr: "BPCER"
+  recall: "TPR (1−APCER)"
+  precision: "PPV"
+  specificity: "TNR"
+
+biometrics:          # legacy alias of presentation_attack_detection (kept for compat)
+  far: "APCER"
+  frr: "BPCER"
+  fpr: "FMR"
+  recall: "TPR (1−FNMR)"
+  precision: "PPV"
+  specificity: "TNR"
+
+clinical:            # diagnostic-test terminology
+  recall: "Sensitivity"
+  specificity: "Specificity"
+  precision: "PPV"
+  npv: "NPV"
+  fpr: "1−Specificity"
+  far: "1−Specificity"
+
+security:            # threat / fraud detection terminology
+  recall: "Detection Rate"
+  precision: "PPV"
+  fpr: "False Alarm Rate"
+  far: "False Accept Rate"
+  frr: "False Reject Rate"
+
+ir:                  # information retrieval
+  recall: "Recall"
+  precision: "Precision"

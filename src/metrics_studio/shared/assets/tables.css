@@ -1,0 +1,28 @@
+.cell-ok { background:#dcfce7; color:#166534; }
+.cell-warn-mild { background:#fef9c3; color:#854d0e; }
+.cell-warn { background:#ffedd5; color:#9a3412; }
+.cell-bad { background:#fee2e2; color:#991b1b; }
+.challenge-table-wrap { width:100%; max-width:100%; overflow:visible; }
+.challenge-table { border-collapse:collapse; table-layout:fixed; font-size:12px; white-space:normal; width:100%; }
+.challenge-table th { background:var(--thead); padding:8px 10px; border-bottom:2px solid var(--line); text-align:center; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+.challenge-table td { padding:8px 10px; border-bottom:1px solid var(--line); text-align:center; }
+.challenge-table td:first-child { text-align:left; font-weight:700; color:var(--heading); }
+.age-band-wrap { width:100%; max-width:100%; overflow:visible; }
+.age-band-table { border-collapse:collapse; table-layout:fixed; font-size:12px; white-space:normal; width:100%; }
+.age-band-table th { background:var(--thead); padding:8px 10px; border-bottom:2px solid var(--line); text-align:center; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+.age-band-table th:first-child { text-align:left; }
+.age-band-table td { padding:8px 10px; border-bottom:1px solid var(--line); text-align:center; }
+.age-band-table td:first-child { text-align:left; font-weight:600; color:var(--subhead); }
+
+/* Paginated table (shared table_paginate.js) */
+.tpt-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; }
+.tpt-head h3 { margin:0; }
+.tpt-export { border:1px solid var(--line); background:var(--card); border-radius:8px; padding:6px 12px; cursor:pointer; font-size:12px; font-weight:700; color:var(--ink); }
+.tpt-export:hover { background:var(--soft); }
+.tpt-empty { text-align:center; color:var(--muted); padding:16px; }
+.tpt-pager { display:flex; gap:4px; justify-content:center; align-items:center; margin-top:12px; flex-wrap:wrap; }
+.tpt-page { min-width:30px; border:1px solid var(--line); background:var(--card); border-radius:8px; padding:5px 9px; cursor:pointer; font-size:12px; font-weight:600; color:var(--ink); }
+.tpt-page:hover:not(:disabled) { background:var(--soft); }
+.tpt-page.active { background:#2563eb; border-color:#2563eb; color:#fff; }
+.tpt-page:disabled { opacity:.4; cursor:default; }
+.tpt-gap { padding:0 4px; color:var(--muted); }

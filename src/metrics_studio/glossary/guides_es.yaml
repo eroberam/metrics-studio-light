@@ -1,0 +1,206 @@
+entries:
+  group_audit:
+    contexts:
+    - '*'
+    category: audit
+    title: Auditoría descriptiva por grupos
+    question: ¿Varía la calidad observada entre los grupos configurados?
+    definition: Desagregación MetricFrame con soporte, métrica, intervalo de confianza, diferencia y ratio.
+    formula: diferencia = métrica del grupo − métrica global; ratio = métrica del grupo / métrica global.
+    interpretation: Localiza cohortes a investigar; no es una certificación de equidad.
+    assumptions: Debe interpretarse dentro de la cohorte activa, el tamaño muestral y el protocolo de adquisición.
+    limitations: Sin soporte suficiente o con intervalos degenerados no hay resultado; no permite conclusiones causales. Las
+      estimaciones filtradas en el navegador no inventan un intervalo servidor sustituto.
+    example: Si el error de una cohorte es 12% y el global 8%, diferencia = 12% − 8% = +4 pp y ratio = 12/8 = 1,50.
+    references:
+    - https://fairlearn.org/main/api_reference/generated/fairlearn.metrics.MetricFrame.html
+  automatic_charts:
+    contexts:
+    - '*'
+    category: visual
+    title: Gráficos automáticos de variables libres
+    question: ¿Qué relaciones aparecen entre las variables y modelos seleccionados?
+    definition: Ejes X, Y y grupo opcional explícitos, con exploración mediante dispersión, caja, mapa de calor o mapas de
+      calor facetados con escala compartida según el tipo de variable.
+    formula: El gráfico depende de los tipos asignados a los ejes; la dispersión se limita a 2.000 puntos deterministas. Los
+      mapas de calor admiten conteo y porcentajes por fila, columna y total.
+    interpretation: Los patrones son exploratorios y requieren contexto y soporte.
+    assumptions: Debe interpretarse dentro de la cohorte activa, el tamaño muestral y el protocolo de adquisición.
+    limitations: La agrupación Top 20, la selección de facetas de alta cardinalidad y el muestreo pueden ocultar estructura
+      local rara.
+    example: 'Para país × dispositivo, una celda con 45 de 180 registros muestra Conteo = 45 y Total % = 45/180 = 25%.'
+  binary_reading_guide:
+    contexts:
+    - binary
+    category: reading
+    title: Cómo leer un panel de decisión binaria
+    question: Con el umbral seleccionado, ¿qué decisiones correctas e incorrectas toma el modelo?
+    definition: Las puntuaciones se convierten en decisiones positiva/negativa con el umbral activo. TP, TN, FP y FN alimentan
+      las métricas dependientes del umbral; ROC-AUC y la precisión media resumen la ordenación sin depender de un umbral.
+    formula: Precisión = TP/(TP+FP); Sensibilidad = TP/(TP+FN); FAR = FP/(FP+TN); FRR = FN/(FN+TP); F1 = 2·Precisión·Sensibilidad/(Precisión+Sensibilidad).
+    interpretation: Mueva el umbral para observar el compromiso operativo. Reducir FAR suele aumentar FRR y viceversa. Lea
+      cada tasa con su denominador y soporte de cohorte.
+    assumptions: Debe interpretarse dentro de la cohorte activa, el tamaño muestral y el protocolo de adquisición.
+    limitations: Una buena tasa global puede ocultar un subgrupo deficiente. AUC no fija un umbral de despliegue y calibración
+      no equivale a discriminación.
+    example: 'Con TP=80, FP=20, TN=180 y FN=20: precisión=80/100=80%, sensibilidad=80/100=80%, FAR=20/200=10% y FRR=20/100=20%.'
+  multiclass_reading_guide:
+    contexts:
+    - multiclass
+    category: reading
+    title: Cómo leer el rendimiento multiclase
+    question: ¿Qué clases se reconocen, se confunden o tienen poco soporte?
+    definition: 'Cada muestra aporta una clase real y una predicha. La matriz conserva la dirección: filas reales y columnas
+      predichas. Las métricas por clase usan conteos uno-contra-resto.'
+    formula: Precisión_c = TP_c/(TP_c+FP_c); sensibilidad_c = TP_c/(TP_c+FN_c); F1_c = 2PR/(P+R); F1 macro = media_c(F1_c); exactitud
+      = aciertos/N.
+    interpretation: Use el promedio macro para ponderar igual cada clase, el promedio ponderado para reflejar la prevalencia
+      y la matriz para localizar la dirección de confusiones concretas.
+    assumptions: Debe interpretarse dentro de la cohorte activa, el tamaño muestral y el protocolo de adquisición.
+    limitations: La exactitud y los promedios ponderados pueden estar dominados por clases frecuentes; las estimaciones de clases
+      raras son inestables con poco soporte.
+    example: Si la clase A tiene TP=40, FP=10 y FN=20, Precision_A=40/50=80%, Recall_A=40/60=66,7% y F1_A=72,7%.
+  regression_reading_guide:
+    contexts:
+    - regression
+    category: reading
+    title: Cómo leer el error de regresión
+    question: ¿A qué distancia están las predicciones de las referencias continuas y es sistemático el error?
+    definition: El residuo con signo es predicción menos referencia. Los resúmenes absolutos y cuadrados miden magnitud; los
+      gráficos revelan sesgo, varianza cambiante y casos influyentes.
+    formula: e_i = ŷ_i−y_i; MAE = media(|e_i|); RMSE = raíz(media(e_i²)); sesgo = media(e_i); R² = 1−Σe_i²/Σ(y_i−ȳ)².
+    interpretation: MAE es un error absoluto típico en la unidad objetivo; RMSE penaliza más los fallos grandes; sesgo positivo
+      indica sobreestimación sistemática.
+    assumptions: Debe interpretarse dentro de la cohorte activa, el tamaño muestral y el protocolo de adquisición.
+    limitations: R² depende de la varianza objetivo y puede ser negativo. Comparar MAE/RMSE exige la misma definición y unidad.
+    example: Para residuos [−2, 1, 3], MAE=(2+1+3)/3=2,00, RMSE=sqrt(14/3)=2,16 y sesgo=(−2+1+3)/3=0,67.
+  age_reading_guide:
+    contexts:
+    - age_estimation
+    category: reading
+    title: Cómo leer la estimación de edad
+    question: ¿Cuál es el error de edad y con qué frecuencia queda dentro de una tolerancia relevante?
+    definition: La edad se trata como objetivo continuo. El error global se complementa con sesgo, índice acumulado dentro
+      de ±t años y diagnósticos por tramo de edad.
+    formula: error_i = edad_estimada_i−edad_referencia_i; MAE = media(|error_i|); CS(t) = conteo(|error_i|≤t)/N; sesgo = media(error_i).
+    interpretation: Menor MAE y mayor CS(t) son mejores. Revise el sesgo por tramo para detectar regresión hacia la media
+      poblacional.
+    assumptions: Debe interpretarse dentro de la cohorte activa, el tamaño muestral y el protocolo de adquisición.
+    limitations: Las etiquetas de edad cronológica pueden tener ruido; una distribución desigual puede ocultar errores en
+      los extremos.
+    example: Para errores absolutos [1, 4, 7, 2], MAE=3,5 años y CS(5)=3/4=75% porque tres predicciones están dentro de ±5
+      años.
+  ocr_reading_guide:
+    contexts:
+    - ocr
+    category: reading
+    title: Cómo leer la calidad OCR
+    question: ¿Es correcta la lectura a nivel de carácter, palabra completa y documento completo?
+    definition: CER cuenta operaciones de edición de caracteres, Recall (Word) cuenta palabras de referencia recuperadas exactamente
+      y Accuracy (Document) exige coincidencia exacta del documento normalizado completo.
+    formula: CER=(sustituciones+eliminaciones+inserciones)/caracteres de referencia; recall de palabras=palabras exactas/palabras
+      de referencia; exactitud de documento=documentos exactos/documentos.
+    interpretation: CER diagnostica degradación parcial; recall es más estricto por palabra; la exactitud es la más estricta y vale
+      cero ante cualquier error restante del documento.
+    assumptions: Debe interpretarse dentro de la cohorte activa, el tamaño muestral y el protocolo de adquisición.
+    limitations: Tokenización y normalización cambian los denominadores y deben mantenerse fijas al comparar modelos o cohortes.
+    example: 'Referencia ''AB 12'', predicción ''AB 13'': una sustitución en 4 caracteres sin espacios da CER=25%; 1 de 2
+      palabras es exacta, recall=50%; el documento difiere, exactitud=0%.'
+  detection_reading_guide:
+    contexts:
+    - object_detection
+    category: reading
+    title: Cómo leer la detección de objetos
+    question: ¿El modelo ordena, localiza y clasifica correctamente cada objeto?
+    definition: Las cajas por encima de la confianza activa se emparejan uno-a-uno con referencias cuando clase e IoU cumplen
+      el protocolo. Predicciones no emparejadas son FP y referencias no emparejadas son FN.
+    formula: IoU=área(intersección)/área(unión); precisión=TP/(TP+FP); sensibilidad=TP/(TP+FN); AP=área bajo la curva interpolada de precisión-sensibilidad;
+      mAP=media de AP entre clases y umbrales IoU.
+    interpretation: Use mAP para evaluar la calidad de ordenación y el punto operativo para el despliegue. La matriz y los casos distinguen localización,
+      clasificación y omisiones.
+    assumptions: Debe interpretarse dentro de la cohorte activa, el tamaño muestral y el protocolo de adquisición.
+    limitations: Depende de taxonomía, anotación, regla IoU y tamaños; valores mAP de protocolos distintos no son intercambiables.
+    example: Con 90 TP, 10 FP y 30 FN a confianza 0,50 e IoU 0,50, la precisión es 90/100=90% y la sensibilidad 90/120=75%.
+  object_detection_protocol:
+    contexts:
+    - object_detection
+    category: protocol
+    title: Protocolo de evaluación de detección de objetos
+    question: ¿Qué resultados miden la calidad de ordenación y cuáles dependen del punto operativo activo?
+    definition: mAP@0.50, mAP@[.50:.95] y AP@0.75 resumen la calidad de ordenación. La precisión, la sensibilidad, F1, la matriz de confusión
+      y los casos cualitativos se recalculan con los umbrales activos de confianza e IoU de emparejamiento.
+    formula: IoU = área(B_pred ∩ B_gt) / área(B_pred ∪ B_gt); AP utiliza precisión interpolada en 101 puntos de sensibilidad; mAP@[.50:.95]
+      promedia AP desde IoU 0,50 hasta 0,95 en pasos de 0,05.
+    interpretation: Use mAP para comparar la calidad de ordenación entre modelos. Use las métricas y evidencias del punto operativo
+      para auditar la decisión de despliegue seleccionada.
+    assumptions: Debe interpretarse dentro de la cohorte activa, el tamaño muestral y el protocolo de adquisición.
+    limitations: 'El cálculo de estilo COCO no reproduce el protocolo COCO completo: no aplica estratos de área, maxDets,
+      iscrowd ni reglas de áreas ignoradas. Las vistas geométricas son descriptivas y no modifican AP ni el emparejamiento.'
+    example: 'Una caja con área de intersección 60 y unión 100 tiene IoU=0,60: empareja a IoU 0,50, pero no a IoU 0,75.'
+  segmentation_reading_guide:
+    contexts:
+    - segmentation
+    category: reading
+    title: Cómo leer la segmentación semántica
+    question: ¿Se reproducen píxel a píxel las regiones de clase y sus contornos?
+    definition: Cada píxel evaluable recibe clase real y predicha. Las métricas de solapamiento evalúan regiones, las de borde
+      contornos y la calibración la fiabilidad probabilística.
+    formula: Dice=2TP/(2TP+FP+FN); IoU=TP/(TP+FP+FN); exactitud por píxel=píxeles correctos/píxeles evaluables; F1 de contorno=media
+      armónica de precisión y sensibilidad de contornos emparejados.
+    interpretation: Lea Dice/IoU con soporte por clase y después F1 de contorno o HD95 si importa el contorno. Una exactitud alta
+      puede coexistir con máscaras de primer plano deficientes.
+    assumptions: Debe interpretarse dentro de la cohorte activa, el tamaño muestral y el protocolo de adquisición.
+    limitations: El dominio del fondo infla la exactitud por píxel; las máscaras vacías y regiones ignoradas siguen el protocolo configurado.
+    example: 'Para TP=70 píxeles, FP=10 y FN=20: Dice=140/170=82,4% e IoU=70/100=70,0%.'
+  segmentation_protocol:
+    contexts:
+    - segmentation
+    category: protocol
+    title: Protocolo de evaluación de segmentación semántica
+    question: ¿Hasta qué punto las máscaras predichas preservan el solapamiento, la identidad de clase, los contornos y la
+      confianza probabilística?
+    definition: Las máscaras indexadas de referencia y predicción se evalúan por imagen y clase. Dice macro e IoU medio excluyen
+      el fondo configurado salvo petición explícita; la exactitud usa todos los píxeles evaluables.
+    formula: Dice = 2TP/(2TP+FP+FN); IoU = TP/(TP+FP+FN); F1 de contorno empareja píxeles de contorno dentro de la tolerancia
+      configurada; HD95 es el percentil 95 de las distancias simétricas entre superficies.
+    interpretation: Interprete conjuntamente solapamiento, fidelidad de contorno y calibración. Revise la evidencia sincronizada
+      antes de atribuir un fallo a la anatomía, la adquisición o el modelo.
+    assumptions: Debe interpretarse dentro de la cohorte activa, el tamaño muestral y el protocolo de adquisición.
+    limitations: Los pares imagen/clase vacíos en ambas máscaras se excluyen y no se puntúan como perfectos. Si sólo una máscara
+      está vacía, las distancias usan la diagonal de la imagen. Los gráficos de calibración usan una muestra determinista
+      por imagen.
+    example: Para una clase con TP=70, FP=10 y FN=20, Dice=140/170=82,4% e IoU=70/100=70,0%.
+  gaze_reading_guide:
+    contexts:
+    - eye_evaluation:evaluation
+    category: reading
+    title: Cómo leer la evaluación de un modelo de mirada
+    question: ¿Cuánto concuerda la mirada predicha con la dirección y posición de referencia?
+    definition: El error angular compara vectores 3D normalizados; el error de pantalla compara puntos 2D emparejados. La
+      exactitud regional resume el acuerdo direccional.
+    formula: Error angular=acos(limitar(g_ref·g_pred/(||g_ref||·||g_pred||),−1,1))·180/π; error 2D=raíz((x_pred−x_ref)²+(y_pred−y_ref)²);
+      exactitud regional=regiones correctas/N.
+    interpretation: Menor error angular/2D es mejor; la media describe lo típico y P95 la cola difícil. Compare ojos y regiones
+      para detectar asimetría o sesgo direccional.
+    assumptions: Debe interpretarse dentro de la cohorte activa, el tamaño muestral y el protocolo de adquisición.
+    limitations: Deben coincidir sistemas de coordenadas, resolución y calidad de referencia. Son diagnósticos de modelo,
+      no medidas clínicas.
+    example: Si el ángulo entre referencia y predicción es 3,5°, esa muestra aporta 3,5°; 87 regiones correctas de 100 dan
+      exactitud regional=87%.
+  tracking_reading_guide:
+    contexts:
+    - eye_evaluation:tracking
+    category: reading
+    title: Cómo leer una grabación de seguimiento ocular
+    question: ¿Qué tan completa, estable e interpretable es la trayectoria registrada?
+    definition: El panel audita una adquisición, no la exactitud predictiva. Validez, frecuencia y huecos describen el muestreo;
+      posición, velocidad y variación temporal describen la trayectoria; la reproducción enlaza la evidencia temporal.
+    formula: Tasa válida=muestras válidas/todas las muestras; Hz efectivos=1/mediana(Δt positivo); mayor hueco=máx(Δt); velocidad
+      normalizada=raíz(Δx²+Δy²)/Δt.
+    interpretation: Alta validez y muestreo estable respaldan la lectura. Huecos largos o baja confianza debilitan conclusiones
+      locales; la densidad no demuestra atención.
+    assumptions: Debe interpretarse dentro de la cohorte activa, el tamaño muestral y el protocolo de adquisición.
+    limitations: Fijaciones y AOI requieren eventos/regiones suministrados. La vista ocular es un esquema de medición y el
+      panel no es clínico.
+    example: Con 950 muestras válidas de 1.000, la tasa válida es 95%. Si la mediana Δt=0,01 s, la frecuencia efectiva es 100 Hz;
+      un Δt de 0,25 s es un hueco de 0,25 s.

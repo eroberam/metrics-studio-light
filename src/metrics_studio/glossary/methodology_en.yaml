@@ -1,0 +1,329 @@
+# Canonical English scientific copy for every metric shown in Methodology.
+# Calculation metadata remains in Python; all reader-facing prose lives here.
+
+defaults:
+  question: "How is {label} calculated and what does its value mean?"
+  example: "Substitute the active panel counts or values in the registered formula."
+  limitations: "Interpret together with sample size, uncertainty and subgroup coverage."
+  requirements:
+    - "task result payload"
+  ci: "Task-configured confidence interval when available."
+
+metrics:
+  roc_auc:
+    label: "ROC-AUC"
+    formula: "Area under the ROC curve."
+    reading: "Probability that a positive ranks above a negative."
+    interpretation: "Higher values indicate stronger ranking separation."
+  average_precision:
+    label: "Average precision"
+    formula: "Area under the precision-recall step curve."
+    reading: "Precision integrated across recall."
+    interpretation: "Higher values indicate better positive-class retrieval."
+  far:
+    label: "False acceptance rate"
+    formula: "FN / (FN + TP) for the configured positive attack/error class."
+    reading: "Share of positive attack/error samples accepted as the negative class."
+    interpretation: "Lower is better; evaluate at the declared operating threshold and class-role convention."
+  frr:
+    label: "False rejection rate"
+    formula: "FP / (FP + TN) for the configured negative bona-fide class."
+    reading: "Share of negative bona-fide samples rejected as the positive class."
+    interpretation: "Lower is better; inspect together with FAR and the declared class roles."
+  accuracy:
+    label: "Accuracy"
+    formula: "Correct predictions / all predictions."
+    reading: "Overall correct-decision rate."
+    interpretation: "Higher is better but can hide class imbalance."
+  error_rate:
+    label: "Error rate"
+    formula: "1 - accuracy."
+    reading: "Share of samples assigned to the wrong class."
+    interpretation: "Lower is better."
+  balanced_accuracy:
+    label: "Balanced accuracy"
+    formula: "Mean recall across classes."
+    reading: "Accuracy with equal class influence."
+    interpretation: "Higher is better when classes are imbalanced."
+  macro_f1:
+    label: "Macro F1"
+    formula: "Unweighted mean of class F1 scores."
+    reading: "Equal-weight class performance."
+    interpretation: "Higher is better and exposes weak minority classes."
+  weighted_f1:
+    label: "Weighted F1"
+    formula: "Support-weighted mean of class F1 scores."
+    reading: "Class performance weighted by observed support."
+    interpretation: "Higher is better; compare with Macro F1 to identify imbalance effects."
+  mcc:
+    label: "Matthews correlation coefficient"
+    formula: "Correlation between observed and predicted classes."
+    reading: "Balanced classification agreement on a scale from -1 to 1."
+    interpretation: "One is perfect, zero is chance-like and negative values indicate inverse association."
+  cohen_kappa:
+    label: "Cohen's kappa"
+    formula: "(observed agreement - expected agreement) / (1 - expected agreement)."
+    reading: "Agreement corrected for the agreement expected from marginal frequencies."
+    interpretation: "Higher values indicate stronger agreement beyond marginals."
+  log_loss:
+    label: "Log loss"
+    formula: "Mean negative log-likelihood of the observed class."
+    reading: "Penalizes confident probability errors strongly."
+    interpretation: "Lower is better and requires probability-like scores."
+  brier_score:
+    label: "Brier score"
+    formula: "mean((probability - observed label)²)."
+    reading: "Mean squared probability error."
+    interpretation: "Lower is better; combines discrimination and calibration."
+  ece:
+    label: "Expected calibration error"
+    formula: "Support-weighted mean absolute gap between bin confidence and empirical rate."
+    reading: "Approximate probability calibration gap over ten bins."
+    interpretation: "Lower is better; always report the binning convention."
+  brier_multiclass:
+    label: "Multiclass Brier score"
+    formula: "Mean summed squared error between the probability vector and one-hot truth."
+    reading: "Joint probability error across all classes."
+    interpretation: "Lower is better and depends on the number of classes."
+  ece_confidence:
+    label: "Confidence ECE"
+    formula: "Support-weighted confidence-versus-correctness gap over ten bins."
+    reading: "Calibration of the maximum predicted probability."
+    interpretation: "Lower is better; it does not assess every class probability independently."
+  roc_auc_ovr_macro:
+    label: "Macro OvR ROC-AUC"
+    formula: "Unweighted mean of one-vs-rest class ROC areas."
+    reading: "Equal-weight ranking separation for every class."
+    interpretation: "Higher is better; unavailable when a required class is absent."
+  top_2_accuracy:
+    label: "Top-2 accuracy"
+    formula: "Share of truths contained in the two highest-scoring classes."
+    reading: "Whether the correct class remains among two candidates."
+    interpretation: "Higher is better; interpret only where a shortlist is operationally useful."
+  mae:
+    label: "Mean absolute error"
+    formula: "mean(|prediction - truth|)."
+    reading: "Typical absolute prediction error in target units."
+    interpretation: "Lower is better."
+  rmse:
+    label: "Root mean squared error"
+    formula: "sqrt(mean((prediction - truth)^2))."
+    reading: "Error measure that emphasizes large misses."
+    interpretation: "Lower is better."
+  r2:
+    label: "R²"
+    formula: "1 - residual sum of squares / total sum of squares."
+    reading: "Explained target variance relative to the mean baseline."
+    interpretation: "Higher is better; negative values are possible."
+  bias:
+    label: "Bias"
+    formula: "mean(prediction - truth)."
+    reading: "Signed systematic error."
+    interpretation: "Values closest to zero are preferred."
+  median_absolute_error:
+    label: "Median absolute error"
+    formula: "median(|prediction - truth|)."
+    reading: "Robust typical absolute error in target units."
+    interpretation: "Lower is better and less sensitive to extreme cases than MAE."
+  spearman_corr:
+    label: "Spearman correlation"
+    formula: "Pearson correlation between the ranks of truth and prediction."
+    reading: "Strength of monotonic ordering."
+    interpretation: "Higher is better; it does not measure calibration or absolute error."
+  pearson_corr:
+    label: "Pearson correlation"
+    formula: "Cov(truth,prediction)/(sd(truth)·sd(prediction))."
+    reading: "Strength of linear association."
+    interpretation: "Higher is better; high correlation can coexist with substantial bias."
+  smape:
+    label: "Symmetric MAPE"
+    formula: "mean(2|prediction-truth|/(|truth|+|prediction|))."
+    reading: "Scale-relative absolute error with a symmetric denominator."
+    interpretation: "Lower is better; undefined zero-zero pairs are omitted."
+  mdae:
+    label: "Median absolute error"
+    formula: "median(|estimated age - reference age|)."
+    reading: "Robust typical age error in years."
+    interpretation: "Lower is better."
+  p90_ae:
+    label: "P90 absolute error"
+    formula: "90th percentile of |estimated age - reference age|."
+    reading: "Upper-tail age error reached by ten percent of samples."
+    interpretation: "Lower is better and complements the central MAE."
+  sd:
+    label: "Residual standard deviation"
+    formula: "Standard deviation of (estimated age - reference age)."
+    reading: "Dispersion of signed age errors around their mean."
+    interpretation: "Lower indicates more consistent errors; interpret together with bias and MAE."
+    unit: "years"
+  acc_at_1:
+    label: "Accuracy within 1 year"
+    formula: "Share of samples with |estimated age - reference age| <= 1 year."
+    reading: "Strict age-estimation tolerance coverage."
+    interpretation: "Higher is better."
+  acc_at_3:
+    label: "Accuracy within 3 years"
+    formula: "Share of samples with |estimated age - reference age| <= 3 years."
+    reading: "Moderate age-estimation tolerance coverage."
+    interpretation: "Higher is better."
+  acc_at_5:
+    label: "Accuracy within 5 years"
+    formula: "Share of samples with |estimated age - reference age| <= 5 years."
+    reading: "Broad age-estimation tolerance coverage."
+    interpretation: "Higher is better."
+  cer:
+    label: "Character error rate"
+    formula: "Character edit operations / ground-truth characters."
+    reading: "Character-level transcription error."
+    interpretation: "Lower is better."
+  field_exact_match_rate:
+    label: "Field exact match"
+    formula: "Exactly matched fields / evaluated fields."
+    reading: "Strict field-level correctness."
+    interpretation: "Higher is better."
+  document_exact_match_rate:
+    label: "Accuracy"
+    formula: "Documents with every normalized field exactly matched / evaluated documents."
+    reading: "Strict whole-document transcription correctness."
+    interpretation: "Higher is better; one incorrect or missing field makes the document incorrect."
+  word_recall:
+    label: "Word recall"
+    formula: "Matched ground-truth tokens / ground-truth tokens."
+    reading: "Coverage of expected words."
+    interpretation: "Higher is better."
+  wer_jiwer:
+    label: "Word error rate"
+    formula: "(word substitutions + deletions + insertions) / reference words."
+    reading: "Corpus-level token edit error calculated with JiWER."
+    interpretation: "Lower is better; tokenization and normalization are part of the protocol."
+  mer:
+    label: "Match error rate"
+    formula: "Word edit errors / (hits + substitutions + deletions + insertions)."
+    reading: "Share of aligned word decisions that are not matches."
+    interpretation: "Lower is better."
+  wil:
+    label: "Word information lost"
+    formula: "One minus word information preserved under the JiWER alignment."
+    reading: "Estimated fraction of word information not preserved."
+    interpretation: "Lower is better; interpret alongside WER and MER."
+  map_50:
+    label: "mAP@50"
+    formula: "Mean class AP at IoU 0.50."
+    reading: "Detection ranking at a moderate overlap threshold."
+    interpretation: "Higher is better; this implementation is COCO-style."
+  map_50_95:
+    label: "mAP@[.50:.95]"
+    formula: "Mean AP over IoU 0.50:0.05:0.95."
+    reading: "Detection and localization quality."
+    interpretation: "Higher is better; this is not the complete COCO protocol."
+  f1:
+    label: "F1"
+    formula: "2TP / (2TP + FP + FN)."
+    reading: "Balance of detection precision and recall."
+    interpretation: "Higher is better at the configured confidence threshold."
+  coco_ap:
+    label: "COCO AP@[.50:.95]"
+    formula: "Official COCOeval mean AP across IoU .50:.05:.95, categories and area=all."
+    reading: "Joint ranking and localization quality under the COCO bbox protocol."
+    interpretation: "Higher is better; maxDets and ignored-area rules follow COCOeval."
+  coco_ar_100:
+    label: "COCO AR@100"
+    formula: "Official COCOeval average recall with at most 100 detections per image."
+    reading: "Recall across IoU thresholds and categories."
+    interpretation: "Higher is better; depends on the configured COCO area ranges."
+  macro_dice:
+    label: "Macro Dice"
+    formula: "Unweighted mean of 2TP/(2TP+FP+FN) across evaluated classes."
+    reading: "Class-balanced region overlap."
+    interpretation: "Higher is better; background is excluded when configured."
+    limitations: "Both-empty image/class pairs are excluded; inspect class support and boundary metrics."
+  mean_iou:
+    label: "Mean IoU"
+    formula: "Unweighted mean of TP/(TP+FP+FN) across evaluated classes."
+    reading: "Strict class-balanced region overlap."
+    interpretation: "Higher is better; IoU penalizes disagreement more strongly than Dice."
+  pixel_accuracy:
+    label: "Pixel accuracy"
+    formula: "Correctly labelled evaluable pixels / all evaluable pixels."
+    reading: "Overall pixel agreement including background."
+    interpretation: "Higher is better but can be dominated by prevalent background pixels."
+  mean_boundary_f1:
+    label: "Boundary F1"
+    formula: "Harmonic mean of boundary precision and recall within the configured pixel tolerance."
+    reading: "Agreement of predicted and reference contours."
+    interpretation: "Higher is better; always report the tolerance and image resolution."
+  mean_hd95:
+    label: "Mean HD95"
+    formula: "Mean class 95th percentile symmetric surface distance."
+    reading: "Robust upper-tail boundary displacement in pixels."
+    interpretation: "Lower is better; physical comparability requires pixel spacing metadata."
+  mean_assd:
+    label: "Mean ASSD"
+    formula: "Mean class average symmetric surface distance."
+    reading: "Typical bidirectional contour distance in pixels."
+    interpretation: "Lower is better; one-empty masks receive the image-diagonal penalty."
+  frequency_weighted_iou:
+    label: "Frequency-weighted IoU"
+    formula: "Sum of class IoU weighted by ground-truth pixel frequency."
+    reading: "Dataset-prevalence-weighted overlap."
+    interpretation: "Higher is better; compare with mean IoU to expose minority-class weakness."
+  segmentation_brier:
+    label: "Multiclass Brier score"
+    formula: "Mean per-pixel sum of squared class-probability error."
+    reading: "Joint probability error across segmentation classes."
+    interpretation: "Lower is better and requires probability maps."
+  segmentation_nll:
+    label: "Negative log-likelihood"
+    formula: "Mean negative logarithm of the probability assigned to the true pixel class."
+    reading: "Penalty for probabilistically confident pixel errors."
+    interpretation: "Lower is better and requires calibrated probability maps."
+  probability_coverage:
+    label: "Probability coverage"
+    formula: "Images with usable probability maps / evaluated images."
+    reading: "Availability of calibration evidence."
+    interpretation: "One is required for a complete calibration audit."
+  mean_angular_error:
+    label: "Mean angular error"
+    formula: "Mean angle between predicted and reference gaze vectors."
+    reading: "Typical gaze-direction disagreement in degrees."
+    interpretation: "Lower is better."
+  p95_angular_error:
+    label: "P95 angular error"
+    formula: "95th percentile of angular error."
+    reading: "Upper-tail gaze error."
+    interpretation: "Lower is better."
+  mean_error_2d:
+    label: "Mean 2D error"
+    formula: "Mean Euclidean distance between predicted and reference 2D landmarks."
+    reading: "Typical image-plane disagreement in pixels."
+    interpretation: "Lower is better; resolution and landmark definition affect comparability."
+  p95_error_2d:
+    label: "P95 2D error"
+    formula: "95th percentile of Euclidean 2D landmark error."
+    reading: "Upper-tail image-plane disagreement in pixels."
+    interpretation: "Lower is better; inspect alongside the mean and missing rate."
+  missing_rate:
+    label: "Missing rate"
+    formula: "Missing or invalid samples / expected samples."
+    reading: "Unavailable prediction share."
+    interpretation: "Lower is better; inspect acquisition and model causes."
+  robustness_score:
+    label: "Robustness score"
+    formula: "Configured weighted utility of available quality components."
+    reading: "Non-clinical composite evaluation diagnostic."
+    interpretation: "Higher is better."
+  tracking_valid_rate:
+    label: "Tracking valid rate"
+    formula: "Valid tracking samples / recorded tracking samples."
+    reading: "Usable gaze sample coverage."
+    interpretation: "Higher is better."
+  tracking_sampling_rate_hz:
+    label: "Effective sampling rate"
+    formula: "Inverse of the median positive inter-sample interval."
+    reading: "Observed temporal sampling density."
+    interpretation: "Compare with the declared acquisition rate."
+  tracking_longest_gap_seconds:
+    label: "Longest tracking gap"
+    formula: "Maximum positive interval between consecutive samples."
+    reading: "Largest uninterrupted period without a new tracking sample."
+    interpretation: "Lower is better within the acquisition protocol."

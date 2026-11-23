@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "metrics-studio-light"
+version = "0.3.0"
+description = "Interactive HTML dashboards and Excel reports for binary classification and age estimation."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "eroberam" }]
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.10",
+    "scikit-learn>=1.3",
+    "plotly>=5.20",
+    "PyYAML>=6.0",
+    "openpyxl>=3.1",
+    "pandera[pandas]>=0.32",
+    "fairlearn>=0.14",
+]
+
+[project.scripts]
+metrics-studio = "metrics_studio.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["metrics_studio*"]
+
+[tool.setuptools.package-data]
+metrics_studio = [
+    "py.typed",
+    "shared/assets/*.css",
+    "shared/assets/*.js",
+    "glossary/*.yaml",
+    "locales/*.json",
+]

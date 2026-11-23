@@ -1,0 +1,332 @@
+# Spanish scientific copy for every metric exposed by the methodology view.
+#
+# Metric identifiers, formulas and computation remain language-neutral in the
+# Python registry. Human-readable methodology is kept here so missing Spanish
+# copy is detectable during tests instead of silently falling back to English.
+
+defaults:
+  question: "¿Cómo se calcula {label} y qué significa su valor?"
+  example: "Sustituya los conteos o valores activos del panel en la fórmula registrada."
+  limitations: "Interprete el resultado junto con el tamaño muestral, la incertidumbre y la cobertura de subgrupos."
+  requirements:
+    - "resultado calculado de la tarea"
+  ci: "Intervalo de confianza configurado para la tarea cuando está disponible."
+
+metrics:
+  roc_auc:
+    label: "ROC-AUC"
+    formula: "Área bajo la curva ROC."
+    reading: "Probabilidad de que una muestra positiva reciba una puntuación mayor que una negativa."
+    interpretation: "Los valores mayores indican una capacidad de ordenación más fuerte."
+  average_precision:
+    label: "Precisión media"
+    formula: "Área bajo la curva escalonada de precisión-sensibilidad."
+    reading: "Precisión integrada a lo largo de la sensibilidad."
+    interpretation: "Los valores mayores indican una mejor recuperación de la clase positiva."
+  far:
+    label: "Tasa de falsa aceptación"
+    formula: "FN / (FN + TP) para la clase positiva de ataque o error configurada."
+    reading: "Proporción de muestras positivas de ataque o error aceptadas como clase negativa."
+    interpretation: "Menor es mejor; evalúela con el umbral operativo y la convención de clases declarados."
+  frr:
+    label: "Tasa de falso rechazo"
+    formula: "FP / (FP + TN) para la clase negativa bona fide configurada."
+    reading: "Proporción de muestras negativas bona fide rechazadas como clase positiva."
+    interpretation: "Menor es mejor; revísela junto con FAR y los roles de clase declarados."
+  accuracy:
+    label: "Exactitud"
+    formula: "Predicciones correctas / total de predicciones."
+    reading: "Tasa global de decisiones correctas."
+    interpretation: "Mayor es mejor, aunque puede ocultar el desequilibrio entre clases."
+  error_rate:
+    label: "Tasa de error"
+    formula: "1 − exactitud."
+    reading: "Proporción de muestras asignadas a una clase incorrecta."
+    interpretation: "Menor es mejor."
+  balanced_accuracy:
+    label: "Exactitud balanceada"
+    formula: "Media de la sensibilidad de todas las clases."
+    reading: "Exactitud en la que todas las clases tienen la misma influencia."
+    interpretation: "Mayor es mejor cuando las clases están desequilibradas."
+  macro_f1:
+    label: "F1 macro"
+    formula: "Media no ponderada de los valores F1 de cada clase."
+    reading: "Rendimiento por clase con el mismo peso para todas ellas."
+    interpretation: "Mayor es mejor y permite detectar clases minoritarias débiles."
+  weighted_f1:
+    label: "F1 ponderado"
+    formula: "Media de los valores F1 de cada clase ponderada por su soporte."
+    reading: "Rendimiento por clase ponderado por el soporte observado."
+    interpretation: "Mayor es mejor; compárelo con F1 macro para identificar el efecto del desequilibrio."
+  mcc:
+    label: "Coeficiente de correlación de Matthews"
+    formula: "Correlación entre las clases observadas y las predichas."
+    reading: "Acuerdo balanceado de clasificación en una escala de −1 a 1."
+    interpretation: "Uno representa acuerdo perfecto, cero un resultado similar al azar y los valores negativos una asociación inversa."
+  cohen_kappa:
+    label: "Kappa de Cohen"
+    formula: "(acuerdo observado − acuerdo esperado) / (1 − acuerdo esperado)."
+    reading: "Acuerdo corregido por el acuerdo esperado a partir de las frecuencias marginales."
+    interpretation: "Los valores mayores indican un acuerdo más fuerte que el explicado por los marginales."
+  log_loss:
+    label: "Pérdida logarítmica"
+    formula: "Media de la log-verosimilitud negativa de la clase observada."
+    reading: "Penaliza especialmente los errores probabilísticos cometidos con mucha confianza."
+    interpretation: "Menor es mejor y requiere puntuaciones interpretables como probabilidades."
+  brier_score:
+    label: "Puntuación de Brier"
+    formula: "media((probabilidad − etiqueta observada)²)."
+    reading: "Error cuadrático medio de las probabilidades."
+    interpretation: "Menor es mejor; combina discriminación y calibración."
+  ece:
+    label: "Error de calibración esperado"
+    formula: "Media absoluta, ponderada por soporte, de la diferencia entre confianza y frecuencia empírica de cada intervalo."
+    reading: "Diferencia aproximada de calibración probabilística en diez intervalos."
+    interpretation: "Menor es mejor; debe declararse siempre la convención de intervalos."
+  brier_multiclass:
+    label: "Puntuación de Brier multiclase"
+    formula: "Media de la suma de errores cuadrados entre el vector de probabilidades y la codificación one-hot real."
+    reading: "Error probabilístico conjunto para todas las clases."
+    interpretation: "Menor es mejor y su escala depende del número de clases."
+  ece_confidence:
+    label: "ECE de confianza"
+    formula: "Diferencia entre confianza y acierto, ponderada por soporte, en diez intervalos."
+    reading: "Calibración de la máxima probabilidad predicha."
+    interpretation: "Menor es mejor; no evalúa de forma independiente la probabilidad de cada clase."
+  roc_auc_ovr_macro:
+    label: "ROC-AUC macro OvR"
+    formula: "Media no ponderada de las áreas ROC uno-contra-resto de cada clase."
+    reading: "Capacidad de ordenación con el mismo peso para todas las clases."
+    interpretation: "Mayor es mejor; no se puede calcular si falta alguna clase necesaria."
+  top_2_accuracy:
+    label: "Exactitud Top-2"
+    formula: "Proporción de etiquetas reales incluidas entre las dos clases con mayor puntuación."
+    reading: "Indica si la clase correcta permanece entre las dos candidatas principales."
+    interpretation: "Mayor es mejor; úsela solo si una lista corta de candidatas tiene utilidad operativa."
+  mae:
+    label: "Error absoluto medio"
+    formula: "media(|predicción − valor real|)."
+    reading: "Error absoluto típico en las unidades de la variable objetivo."
+    interpretation: "Menor es mejor."
+  rmse:
+    label: "Raíz del error cuadrático medio"
+    formula: "raíz(media((predicción − valor real)²))."
+    reading: "Medida de error que da más peso a los fallos grandes."
+    interpretation: "Menor es mejor."
+  r2:
+    label: "R²"
+    formula: "1 − suma de cuadrados de los residuos / suma total de cuadrados."
+    reading: "Varianza de la variable objetivo explicada respecto al predictor constante de la media."
+    interpretation: "Mayor es mejor; puede tomar valores negativos."
+  bias:
+    label: "Sesgo"
+    formula: "media(predicción − valor real)."
+    reading: "Error sistemático con signo."
+    interpretation: "Se prefieren los valores más próximos a cero."
+  median_absolute_error:
+    label: "Mediana del error absoluto"
+    formula: "mediana(|predicción − valor real|)."
+    reading: "Error absoluto típico y robusto en las unidades de la variable objetivo."
+    interpretation: "Menor es mejor y es menos sensible a casos extremos que MAE."
+  spearman_corr:
+    label: "Correlación de Spearman"
+    formula: "Correlación de Pearson entre los rangos del valor real y la predicción."
+    reading: "Fuerza de la ordenación monótona."
+    interpretation: "Mayor es mejor; no mide calibración ni error absoluto."
+  pearson_corr:
+    label: "Correlación de Pearson"
+    formula: "Cov(valor real, predicción) / (DE(valor real) · DE(predicción))."
+    reading: "Fuerza de la asociación lineal."
+    interpretation: "Mayor es mejor; una correlación alta puede coexistir con un sesgo importante."
+  smape:
+    label: "MAPE simétrico"
+    formula: "media(2|predicción − valor real| / (|valor real| + |predicción|))."
+    reading: "Error absoluto relativo a la escala con denominador simétrico."
+    interpretation: "Menor es mejor; se omiten los pares cero-cero, donde no está definido."
+  mdae:
+    label: "Mediana del error absoluto"
+    formula: "mediana(|edad estimada − edad de referencia|)."
+    reading: "Error de edad típico y robusto, expresado en años."
+    interpretation: "Menor es mejor."
+  p90_ae:
+    label: "P90 del error absoluto"
+    formula: "Percentil 90 de |edad estimada − edad de referencia|."
+    reading: "Error de edad de la cola superior que alcanza el diez por ciento de las muestras."
+    interpretation: "Menor es mejor y complementa al MAE como medida central."
+  sd:
+    label: "Desviación estándar residual"
+    formula: "Desviación estándar de (edad estimada − edad de referencia)."
+    reading: "Dispersión de los errores de edad con signo alrededor de su media."
+    interpretation: "Un valor menor indica errores más consistentes; interprételo junto con el sesgo y el MAE."
+    unit: "años"
+  acc_at_1:
+    label: "Exactitud dentro de 1 año"
+    formula: "Proporción de muestras con |edad estimada − edad de referencia| ≤ 1 año."
+    reading: "Cobertura con una tolerancia estricta de estimación de edad."
+    interpretation: "Mayor es mejor."
+  acc_at_3:
+    label: "Exactitud dentro de 3 años"
+    formula: "Proporción de muestras con |edad estimada − edad de referencia| ≤ 3 años."
+    reading: "Cobertura con una tolerancia moderada de estimación de edad."
+    interpretation: "Mayor es mejor."
+  acc_at_5:
+    label: "Exactitud dentro de 5 años"
+    formula: "Proporción de muestras con |edad estimada − edad de referencia| ≤ 5 años."
+    reading: "Cobertura con una tolerancia amplia de estimación de edad."
+    interpretation: "Mayor es mejor."
+  cer:
+    label: "Tasa de error de caracteres"
+    formula: "Operaciones de edición de caracteres / caracteres de referencia."
+    reading: "Error de transcripción a nivel de carácter."
+    interpretation: "Menor es mejor."
+  field_exact_match_rate:
+    label: "Coincidencia exacta de campo"
+    formula: "Campos coincidentes exactamente / campos evaluados."
+    reading: "Corrección estricta a nivel de campo."
+    interpretation: "Mayor es mejor."
+  document_exact_match_rate:
+    label: "Accuracy"
+    formula: "Documentos con todos los campos normalizados exactamente iguales / documentos evaluados."
+    reading: "Corrección estricta de la transcripción del documento completo."
+    interpretation: "Mayor es mejor; un solo campo incorrecto o ausente hace que el documento sea incorrecto."
+  word_recall:
+    label: "Recall de palabras"
+    formula: "Tokens de referencia coincidentes / tokens de referencia."
+    reading: "Cobertura de las palabras esperadas."
+    interpretation: "Mayor es mejor."
+  wer_jiwer:
+    label: "Tasa de error de palabras"
+    formula: "(sustituciones + eliminaciones + inserciones de palabras) / palabras de referencia."
+    reading: "Error de edición de tokens en el corpus calculado con JiWER."
+    interpretation: "Menor es mejor; la tokenización y la normalización forman parte del protocolo."
+  mer:
+    label: "Tasa de error de coincidencia"
+    formula: "Errores de edición de palabras / (aciertos + sustituciones + eliminaciones + inserciones)."
+    reading: "Proporción de decisiones de palabras alineadas que no son coincidencias."
+    interpretation: "Menor es mejor."
+  wil:
+    label: "Información de palabra perdida"
+    formula: "Uno menos la información de palabras preservada según el alineamiento de JiWER."
+    reading: "Fracción estimada de información de palabras que no se ha preservado."
+    interpretation: "Menor es mejor; interprétela junto con WER y MER."
+  map_50:
+    label: "mAP@50"
+    formula: "Media del AP de cada clase con IoU 0,50."
+    reading: "Calidad de la ordenación de detecciones con un umbral de solapamiento moderado."
+    interpretation: "Mayor es mejor; esta implementación sigue un protocolo de estilo COCO."
+  map_50_95:
+    label: "mAP@[.50:.95]"
+    formula: "Media del AP para IoU desde 0,50 hasta 0,95 en pasos de 0,05."
+    reading: "Calidad conjunta de detección y localización."
+    interpretation: "Mayor es mejor; no representa el protocolo COCO completo."
+  f1:
+    label: "F1"
+    formula: "2TP / (2TP + FP + FN)."
+    reading: "Equilibrio entre precisión y sensibilidad de las detecciones."
+    interpretation: "Mayor es mejor en el umbral de confianza configurado."
+  coco_ap:
+    label: "COCO AP@[.50:.95]"
+    formula: "Media AP oficial de COCOeval para IoU .50:.05:.95, categorías y área total."
+    reading: "Calidad conjunta de ordenación y localización bajo el protocolo COCO de cajas."
+    interpretation: "Mayor es mejor; maxDets y las reglas de áreas ignoradas siguen COCOeval."
+  coco_ar_100:
+    label: "COCO AR@100"
+    formula: "Sensibilidad media oficial de COCOeval con un máximo de 100 detecciones por imagen."
+    reading: "Sensibilidad agregada a través de umbrales IoU y categorías."
+    interpretation: "Mayor es mejor; depende de los rangos de área configurados en COCO."
+  macro_dice:
+    label: "Dice macro"
+    formula: "Media no ponderada de 2TP / (2TP + FP + FN) en las clases evaluadas."
+    reading: "Solapamiento de regiones balanceado por clase."
+    interpretation: "Mayor es mejor; el fondo se excluye cuando así se configura."
+    limitations: "Se excluyen los pares imagen/clase en los que ambas máscaras están vacías; revise el soporte por clase y las métricas de contorno."
+  mean_iou:
+    label: "IoU medio"
+    formula: "Media no ponderada de TP / (TP + FP + FN) en las clases evaluadas."
+    reading: "Solapamiento estricto de regiones balanceado por clase."
+    interpretation: "Mayor es mejor; IoU penaliza el desacuerdo con más intensidad que Dice."
+  pixel_accuracy:
+    label: "Exactitud por píxel"
+    formula: "Píxeles evaluables correctamente etiquetados / total de píxeles evaluables."
+    reading: "Acuerdo global por píxel, incluido el fondo."
+    interpretation: "Mayor es mejor, aunque puede estar dominada por los píxeles de fondo prevalentes."
+  mean_boundary_f1:
+    label: "F1 de contorno"
+    formula: "Media armónica de precisión y sensibilidad de contorno dentro de la tolerancia configurada en píxeles."
+    reading: "Acuerdo entre los contornos predichos y los de referencia."
+    interpretation: "Mayor es mejor; declare siempre la tolerancia y la resolución de imagen."
+  mean_hd95:
+    label: "HD95 medio"
+    formula: "Media por clase del percentil 95 de la distancia simétrica entre superficies."
+    reading: "Desplazamiento robusto de la cola superior del contorno, expresado en píxeles."
+    interpretation: "Menor es mejor; la comparación física requiere metadatos de espaciado de píxel."
+  mean_assd:
+    label: "ASSD medio"
+    formula: "Media por clase de la distancia media simétrica entre superficies."
+    reading: "Distancia bidireccional típica entre contornos, expresada en píxeles."
+    interpretation: "Menor es mejor; las máscaras vacías frente a no vacías reciben la penalización de la diagonal de la imagen."
+  frequency_weighted_iou:
+    label: "IoU ponderado por frecuencia"
+    formula: "Suma del IoU de cada clase ponderado por su frecuencia de píxeles reales."
+    reading: "Solapamiento ponderado por la prevalencia de cada clase en el conjunto de datos."
+    interpretation: "Mayor es mejor; compárelo con IoU medio para detectar debilidad en clases minoritarias."
+  segmentation_brier:
+    label: "Puntuación de Brier multiclase"
+    formula: "Media por píxel de la suma del error cuadrático de las probabilidades de clase."
+    reading: "Error probabilístico conjunto de las clases de segmentación."
+    interpretation: "Menor es mejor y requiere mapas de probabilidad."
+  segmentation_nll:
+    label: "Log-verosimilitud negativa"
+    formula: "Media del logaritmo negativo de la probabilidad asignada a la clase real de cada píxel."
+    reading: "Penalización de errores de píxel realizados con una confianza probabilística alta."
+    interpretation: "Menor es mejor y requiere mapas de probabilidad calibrados."
+  probability_coverage:
+    label: "Cobertura de probabilidades"
+    formula: "Imágenes con mapas de probabilidad utilizables / imágenes evaluadas."
+    reading: "Disponibilidad de evidencia para evaluar la calibración."
+    interpretation: "Debe alcanzar uno para que la auditoría de calibración sea completa."
+  mean_angular_error:
+    label: "Error angular medio"
+    formula: "Media del ángulo entre los vectores de mirada predicho y de referencia."
+    reading: "Desacuerdo típico de la dirección de mirada, expresado en grados."
+    interpretation: "Menor es mejor."
+  p95_angular_error:
+    label: "P95 del error angular"
+    formula: "Percentil 95 del error angular."
+    reading: "Error de mirada de la cola superior."
+    interpretation: "Menor es mejor."
+  mean_error_2d:
+    label: "Error 2D medio"
+    formula: "Media de la distancia euclídea entre los landmarks 2D predichos y de referencia."
+    reading: "Desacuerdo típico en el plano de imagen, expresado en píxeles."
+    interpretation: "Menor es mejor; la resolución y la definición del landmark afectan a la comparabilidad."
+  p95_error_2d:
+    label: "P95 del error 2D"
+    formula: "Percentil 95 de la distancia euclídea entre landmarks 2D."
+    reading: "Desacuerdo de la cola superior en el plano de imagen, expresado en píxeles."
+    interpretation: "Menor es mejor; revíselo junto con la media y la tasa de ausencias."
+  missing_rate:
+    label: "Tasa de ausencias"
+    formula: "Muestras ausentes o no válidas / muestras esperadas."
+    reading: "Proporción de predicciones no disponibles."
+    interpretation: "Menor es mejor; investigue por separado las causas de adquisición y del modelo."
+  robustness_score:
+    label: "Índice de robustez"
+    formula: "Utilidad ponderada configurada a partir de los componentes de calidad disponibles."
+    reading: "Diagnóstico compuesto de evaluación sin finalidad clínica."
+    interpretation: "Mayor es mejor."
+  tracking_valid_rate:
+    label: "Tasa válida de seguimiento"
+    formula: "Muestras válidas de seguimiento / muestras registradas de seguimiento."
+    reading: "Cobertura de muestras de mirada utilizables."
+    interpretation: "Mayor es mejor."
+  tracking_sampling_rate_hz:
+    label: "Frecuencia efectiva de muestreo"
+    formula: "Inversa de la mediana del intervalo positivo entre muestras consecutivas."
+    reading: "Densidad temporal de muestreo observada."
+    interpretation: "Compárela con la frecuencia de adquisición declarada."
+  tracking_longest_gap_seconds:
+    label: "Mayor interrupción del seguimiento"
+    formula: "Máximo intervalo positivo entre muestras consecutivas."
+    reading: "Mayor periodo continuo sin una nueva muestra de seguimiento."
+    interpretation: "Menor es mejor dentro del protocolo de adquisición."

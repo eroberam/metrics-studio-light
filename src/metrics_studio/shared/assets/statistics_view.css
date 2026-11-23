@@ -1,0 +1,69 @@
+/* Statistics follows the desktop workbench: compact tabs and two-column schema. */
+.dm-v2-statistics-view { padding:14px; }
+.dm-v2-statistics-view .dm-v2-view-header { margin-bottom:14px; }
+.dm-v2-stat-index { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:4px;background:#f4f7fb;border:1px solid var(--line);border-radius:8px;margin:0 0 12px; }
+.dm-v2-stat-index button { position:relative;min-height:42px;border:1px solid transparent;border-radius:6px;background:transparent;color:#506487;font-size:12px;font-weight:650;box-shadow:none;cursor:pointer;transition:color .15s ease,background .15s ease,border-color .15s ease; }
+.dm-v2-stat-index button::before { display:inline-block;margin-right:8px;color:#6b84a5;font-size:14px; }
+.dm-v2-stat-index button[data-stat-tab="dataMap"]::before { content:"▦"; }
+.dm-v2-stat-index button[data-stat-tab="relationship"]::before { content:"▥"; }
+.dm-v2-stat-index button:hover { color:#124987;background:#eef5ff; }
+.dm-v2-stat-index button[aria-selected="true"] { color:#07316a;background:#fff;border-color:#1680ff;box-shadow:inset 0 -3px 0 #1680ff;font-weight:750; }
+.dm-v2-stat-index button:focus-visible,.dm-v2-statistics-view [role="tabpanel"]:focus-visible { outline:2px solid #1678ed;outline-offset:3px; }
+.dm-v2-statistics-view [role="tabpanel"][hidden] { display:none!important; }
+.dm-v2-statistics-view .dm-v2-stat-section { margin-top:12px;padding:14px;border-radius:8px;box-shadow:none; }
+.dm-v2-statistics-view .dm-v2-stat-section:first-child { margin-top:0; }
+.dm-v2-statistics-view .dm-v2-stat-section > header { margin-bottom:12px; }
+.dm-v2-statistics-view .dm-v2-stat-section h2 { font-size:17px;letter-spacing:0;text-transform:none; }
+.dm-v2-statistics-view .dm-v2-stat-section > header > span { width:28px;height:28px;flex-basis:28px;border-radius:6px;color:#1680ff;background:#eaf4ff; }
+.dm-v2-tree-tools { align-items:center;margin:0 0 12px;gap:8px;padding:0;border:0;background:none; }
+.dm-v2-statistics-view .dm-v2-tree-tools input,.dm-v2-statistics-view .dm-v2-tree-tools button { min-height:38px;border-radius:6px;font-size:12px; }
+.dm-v2-tree-tools input { flex:1 1 50%;min-width:200px;padding-left:12px; }
+.dm-v2-tree-model { border-radius:7px;background:#f7faff; }
+.dm-v2-tree-model > summary { display:flex;align-items:center;min-height:44px;padding:8px 10px;list-style:none;font-size:13px; }
+.dm-v2-tree-model > summary::-webkit-details-marker { display:none; }
+.dm-v2-tree-model > summary::before { content:"›";display:grid;place-items:center;flex:none;width:24px;height:24px;margin-right:9px;border-radius:6px;background:#e8f3ff;color:#0874ed;font-size:20px; }
+.dm-v2-tree-model[open] > summary::before { transform:rotate(90deg); }
+.dm-v2-tree-model > summary strong { overflow-wrap:anywhere; }
+.dm-v2-tree-model > summary span { font-size:12px;padding-left:12px;white-space:nowrap; }
+.dm-v2-tree-model > summary::after { margin-left:10px;color:#0874ed; }
+.dm-v2-tree-model > summary:focus-visible { outline:2px solid #1680ff;outline-offset:-3px; }
+.dm-v2-tree-fields { grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px;padding:0 10px 10px;align-items:start; }
+.dm-v2-tree-field { border-radius:5px; }
+.dm-v2-tree-field > header { padding:10px 11px 8px; }
+.dm-v2-tree-field code { font-family:inherit;font-size:12px;font-weight:750; }
+.dm-v2-tree-role,.dm-v2-tree-type { font-size:11px;padding:3px 5px;border-radius:3px;letter-spacing:0; }
+.dm-v2-tree-role { background:#ecf4ff;color:#174a83; }
+.dm-v2-tree-type { background:#f0f4fa;color:#4c6585; }
+.dm-v2-tree-field > header small { margin-top:6px;font-size:11px; }
+.dm-v2-tree-values-details > summary { min-height:39px;padding:5px 10px;background:#f8fbff; }
+.dm-v2-tree-values-label > span,.dm-v2-tree-values-label small,.dm-v2-tree-values-count { font-size:12px; }
+.dm-v2-tree-values-count { margin-left:auto; }
+.dm-v2-tree-values-details[open] { outline:1px solid #2190ff;outline-offset:-1px;border-radius:4px; }
+.dm-v2-tree-values-details[open] > summary { background:#eaf4ff; }
+.dm-v2-tree-values { max-height:230px;padding:0 11px 5px; }
+.dm-v2-tree-values li { font-size:12px;line-height:1.5; }
+.dm-v2-tree-values-chevron { width:25px;height:25px;border-radius:5px; }
+.dm-stat-summary-scroll { overflow:auto;border:1px solid var(--line);border-radius:7px; }
+.dm-stat-summary caption { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap; }
+.dm-stat-summary table { width:100%;min-width:1150px;table-layout:fixed;border-collapse:collapse;font-size:12px;color:var(--text); }
+.dm-stat-summary th,.dm-stat-summary td { padding:10px 12px;text-align:left;vertical-align:middle;border-bottom:1px solid var(--line);border-right:1px solid var(--line); }
+.dm-stat-summary tr:last-child td,.dm-stat-summary tr:last-child th { border-bottom:0; }
+.dm-stat-summary th:last-child,.dm-stat-summary td:last-child { border-right:0; }
+.dm-stat-summary thead th { background:#f3f7fc;color:#435e80;font-size:12px;font-weight:700;text-transform:none;letter-spacing:0; }
+.dm-stat-summary thead th:nth-child(1) { width:19%; }
+.dm-stat-summary thead th:nth-child(2) { width:14%; }
+.dm-stat-summary thead th:nth-child(3) { width:29%; }
+.dm-stat-summary thead th:nth-child(4) { width:38%; }
+.dm-stat-summary-model { color:#092c61;font-weight:750;overflow-wrap:anywhere; }
+.dm-stat-model-dot { display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px; }
+.dm-stat-quality { color:#506487;line-height:1.7;font-variant-numeric:tabular-nums; }
+.dm-stat-summary-values > div { display:flex;gap:10px;align-items:baseline;min-height:25px;line-height:1.65; }
+.dm-stat-summary-values strong { min-width:0;flex:0 0 98px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650;color:#173961; }
+.dm-stat-summary-values span { min-width:0;color:#506487;font-variant-numeric:tabular-nums;overflow-wrap:anywhere; }
+.dm-stat-summary-plot { padding:6px 4px!important; }
+.dm-stat-boxplot { display:block;width:100%;min-width:430px;overflow:visible; }
+.dm-stat-grid { stroke:#e5ecf5;stroke-width:1; }
+.dm-stat-axis { font-family:inherit;font-size:14px;fill:#4c6585; }
+.dm-stat-summary-note { margin:9px 1px 0;color:#506487;font-size:12px;line-height:1.6; }
+.dm-v2-statistics-view .dm-v2-chart-kind { font-size:11px; }
+@media print { .dm-v2-stat-index { display:none; } .dm-stat-summary table { min-width:0; } .dm-stat-boxplot { min-width:0; } }

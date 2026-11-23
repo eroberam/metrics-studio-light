@@ -1,0 +1,207 @@
+entries:
+  group_audit:
+    contexts:
+    - '*'
+    category: audit
+    title: Descriptive group audit
+    question: Does observed service quality vary across configured groups?
+    definition: MetricFrame disaggregation with support, metric, confidence interval, difference and ratio.
+    formula: difference = group metric − overall; ratio = group metric / overall.
+    interpretation: Locate cohorts needing investigation; this is not a fairness certification.
+    assumptions: Interpret within the active cohort, sample size and acquisition protocol.
+    limitations: Insufficient-support or degenerate intervals are unavailable; causal conclusions are unsupported. Browser-filtered
+      point estimates do not invent a replacement server interval.
+    example: If a cohort error is 12% and the overall error is 8%, difference = 12% − 8% = +4 pp and ratio = 12/8 = 1.50.
+    references:
+    - https://fairlearn.org/main/api_reference/generated/fairlearn.metrics.MetricFrame.html
+  automatic_charts:
+    contexts:
+    - '*'
+    category: visual
+    title: Automatic free-variable charts
+    question: What relationships are visible between selected variables and models?
+    definition: Explicit X, Y and optional group axes with type-aware scatter, box, heatmap or shared-scale faceted-heatmap
+      exploration.
+    formula: Chart type follows the assigned axis types; scatter is capped at 2,000 deterministic points. Heatmaps support
+      count, row, column and total percentages.
+    interpretation: Patterns are exploratory and require domain and sample-support context.
+    assumptions: Interpret within the active cohort, sample size and acquisition protocol.
+    limitations: Top-20 grouping, high-cardinality facet selection and sampling can hide rare local structure.
+    example: For country × device, a cell with 45 of 180 records is Count = 45 and Total % = 45/180 = 25%.
+  binary_reading_guide:
+    contexts:
+    - binary
+    category: reading
+    title: How to read a binary decision panel
+    question: At the selected threshold, which correct and incorrect decisions does the model make?
+    definition: Scores are converted to positive/negative decisions at the active threshold. TP, TN, FP and FN are then the
+      common source for threshold-dependent metrics; ROC-AUC and average precision remain threshold-free ranking summaries.
+    formula: Precision = TP/(TP+FP); Recall = TP/(TP+FN); FAR = FP/(FP+TN); FRR = FN/(FN+TP); F1 = 2·Precision·Recall/(Precision+Recall).
+    interpretation: Move the threshold to expose the operating trade-off. A lower FAR usually increases FRR and vice versa.
+      Read every rate with its denominator and cohort support.
+    assumptions: Interpret within the active cohort, sample size and acquisition protocol.
+    limitations: A good global rate can hide a poor subgroup. AUC does not identify a deployment threshold and calibration
+      does not imply discrimination.
+    example: 'With TP=80, FP=20, TN=180 and FN=20: Precision=80/100=80%, Recall=80/100=80%, FAR=20/200=10% and FRR=20/100=20%.'
+  multiclass_reading_guide:
+    contexts:
+    - multiclass
+    category: reading
+    title: How to read multiclass performance
+    question: Which classes are recognized, confused or under-supported?
+    definition: 'Each sample contributes one reference class and one predicted class. The confusion matrix preserves direction:
+      rows are actual classes and columns are predictions. Per-class metrics use one-vs-rest counts.'
+    formula: Precision_c = TP_c/(TP_c+FP_c); Recall_c = TP_c/(TP_c+FN_c); F1_c = 2PR/(P+R); Macro F1 = mean_c(F1_c); Accuracy
+      = correct/N.
+    interpretation: Use macro scores to give every class equal weight, weighted scores to reflect prevalence and the matrix
+      to identify the direction of specific confusions.
+    assumptions: Interpret within the active cohort, sample size and acquisition protocol.
+    limitations: Accuracy and weighted averages can be dominated by frequent classes; rare-class estimates are unstable with
+      low support.
+    example: If class A has TP=40, FP=10 and FN=20, Precision_A=40/50=80%, Recall_A=40/60=66.7% and F1_A=72.7%.
+  regression_reading_guide:
+    contexts:
+    - regression
+    category: reading
+    title: How to read regression error
+    question: How far are predictions from continuous references, and is the error systematic?
+    definition: The signed residual is prediction minus reference. Absolute and squared summaries measure magnitude; residual
+      plots reveal bias, changing variance and influential cases.
+    formula: e_i = ŷ_i−y_i; MAE = mean(|e_i|); RMSE = sqrt(mean(e_i²)); bias = mean(e_i); R² = 1−Σe_i²/Σ(y_i−ȳ)².
+    interpretation: MAE is a typical absolute error in the target unit; RMSE penalizes large misses more; bias above zero
+      means systematic overprediction.
+    assumptions: Interpret within the active cohort, sample size and acquisition protocol.
+    limitations: R² is relative to target variance and can be negative. Comparable MAE/RMSE values require the same target
+      definition and unit.
+    example: For residuals [−2, 1, 3], MAE=(2+1+3)/3=2.00, RMSE=sqrt(14/3)=2.16 and bias=(−2+1+3)/3=0.67.
+  age_reading_guide:
+    contexts:
+    - age_estimation
+    category: reading
+    title: How to read age-estimation performance
+    question: How large is age error and how often is it within a clinically or operationally meaningful tolerance?
+    definition: Age is treated as a continuous target. Global error is complemented by signed bias, cumulative score within
+      ±t years and age-band diagnostics.
+    formula: error_i = predicted_age_i−true_age_i; MAE = mean(|error_i|); CS(t) = count(|error_i|≤t)/N; bias = mean(error_i).
+    interpretation: Lower MAE and higher CS(t) are better. Inspect signed bias by age band to detect regression toward the
+      population mean.
+    assumptions: Interpret within the active cohort, sample size and acquisition protocol.
+    limitations: Chronological-age labels may contain noise; uneven age distribution can hide errors at the youngest or oldest
+      ranges.
+    example: For absolute errors [1, 4, 7, 2], MAE=3.5 years and CS(5)=3/4=75% because three predictions are within ±5 years.
+  ocr_reading_guide:
+    contexts:
+    - ocr
+    category: reading
+    title: How to read OCR quality
+    question: Is the text correct at character, complete-word and whole-document level?
+    definition: CER counts character edit operations, Recall (Word) counts exactly recovered reference words, and Accuracy
+      (Document) requires the complete normalized document to match exactly.
+    formula: CER=(substitutions+deletions+insertions)/reference characters; Word recall=exact reference words/reference words;
+      Document accuracy=exact documents/documents.
+    interpretation: CER diagnoses partial text degradation; word recall is stricter at token level; document accuracy is the
+      strictest and falls to zero after any remaining document error.
+    assumptions: Interpret within the active cohort, sample size and acquisition protocol.
+    limitations: Tokenization and normalization rules change the denominators and must remain fixed when comparing models
+      or cohorts.
+    example: 'Reference ''AB 12'', prediction ''AB 13'': one substitution over 4 non-space characters gives CER=25%; 1 of
+      2 words is exact, so word recall=50%; the document differs, so accuracy=0%.'
+  detection_reading_guide:
+    contexts:
+    - object_detection
+    category: reading
+    title: How to read object detection
+    question: Does the model rank, localize and classify every object correctly?
+    definition: Predicted boxes above the active confidence are matched one-to-one with reference boxes when class and IoU
+      satisfy the protocol. Unmatched predictions are FP and unmatched references are FN.
+    formula: IoU=area(intersection)/area(union); Precision=TP/(TP+FP); Recall=TP/(TP+FN); AP=area under interpolated precision-recall;
+      mAP=mean AP across classes/IoU thresholds.
+    interpretation: Use mAP for ranking quality and the active operating point for deployment behavior. Confusion and cases
+      explain whether failures are localization, classification or missing detections.
+    assumptions: Interpret within the active cohort, sample size and acquisition protocol.
+    limitations: Results depend on class taxonomy, annotation policy, IoU rule and object-size distribution; mAP values from
+      different protocols are not interchangeable.
+    example: With 90 TP, 10 FP and 30 FN at confidence 0.50 and IoU 0.50, Precision=90/100=90% and Recall=90/120=75%.
+  object_detection_protocol:
+    contexts:
+    - object_detection
+    category: protocol
+    title: Object-detection evaluation protocol
+    question: Which results measure ranking quality and which depend on the active operating point?
+    definition: mAP@0.50, mAP@[.50:.95] and AP@0.75 summarize ranking quality. Precision, recall, F1, the confusion matrix
+      and qualitative cases are recomputed with the active confidence and matching-IoU thresholds.
+    formula: IoU = area(B_pred ∩ B_gt) / area(B_pred ∪ B_gt); AP uses 101-point interpolated precision over recall; mAP@[.50:.95]
+      averages AP from IoU 0.50 to 0.95 in steps of 0.05.
+    interpretation: Use mAP to compare ranking quality across models. Use the operating-point metrics and evidence to audit
+      the deployment decision currently selected.
+    assumptions: Interpret within the active cohort, sample size and acquisition protocol.
+    limitations: 'The COCO-style calculation does not reproduce the full COCO protocol: area strata, maxDets, iscrowd and
+      ignored-area rules are not applied. Geometry views are descriptive and do not alter AP or matching.'
+    example: 'A predicted box with intersection area 60 and union area 100 has IoU=0.60: it matches at IoU 0.50, but not at
+      IoU 0.75.'
+  segmentation_reading_guide:
+    contexts:
+    - segmentation
+    category: reading
+    title: How to read semantic segmentation
+    question: Are class regions and their boundaries reproduced pixel by pixel?
+    definition: Every evaluable pixel is assigned a reference and predicted class. Overlap metrics assess regions, boundary
+      metrics assess contours and calibration assesses probability reliability.
+    formula: Dice=2TP/(2TP+FP+FN); IoU=TP/(TP+FP+FN); Pixel accuracy=correct pixels/evaluable pixels; Boundary F1=harmonic
+      mean of matched boundary precision and recall.
+    interpretation: Read Dice/IoU with per-class support, then inspect Boundary F1 or HD95 when contour placement matters.
+      High pixel accuracy can coexist with poor foreground masks.
+    assumptions: Interpret within the active cohort, sample size and acquisition protocol.
+    limitations: Background dominance inflates pixel accuracy; empty masks and ignore regions follow the configured protocol
+      and must be disclosed.
+    example: 'For TP=70 pixels, FP=10 and FN=20: Dice=140/170=82.4% and IoU=70/100=70.0%.'
+  segmentation_protocol:
+    contexts:
+    - segmentation
+    category: protocol
+    title: Semantic-segmentation evaluation protocol
+    question: How well do predicted masks preserve region overlap, class identity, boundaries and probabilistic confidence?
+    definition: Indexed reference and prediction masks are evaluated per image and class. Macro Dice and mean IoU exclude
+      the configured background unless requested; pixel accuracy uses every evaluable pixel.
+    formula: Dice = 2TP/(2TP+FP+FN); IoU = TP/(TP+FP+FN); Boundary F1 matches contour pixels within the configured tolerance;
+      HD95 is the 95th percentile of symmetric surface distances.
+    interpretation: Read overlap, boundary fidelity and calibration together. Inspect synchronized image evidence before attributing
+      a failure to anatomy, acquisition or model behavior.
+    assumptions: Interpret within the active cohort, sample size and acquisition protocol.
+    limitations: Both-empty image/class pairs are excluded rather than scored as perfect. When exactly one mask is empty,
+      surface distances use the image diagonal. Calibration and risk-coverage charts use a deterministic pixel sample per
+      image.
+    example: For one class with TP=70, FP=10 and FN=20, Dice=140/170=82.4% and IoU=70/100=70.0%.
+  gaze_reading_guide:
+    contexts:
+    - eye_evaluation:evaluation
+    category: reading
+    title: How to read gaze-model evaluation
+    question: How closely does predicted gaze agree with the reference direction and screen location?
+    definition: Angular error compares normalized 3D gaze vectors; screen error compares paired 2D points in the declared
+      coordinate system. Cardinal-region accuracy summarizes directional agreement.
+    formula: Angular error=acos(clip(g_ref·g_pred/(||g_ref||·||g_pred||),−1,1))·180/π; 2D error=sqrt((x_pred−x_ref)²+(y_pred−y_ref)²);
+      region accuracy=correct regions/N.
+    interpretation: Lower angular/2D error is better; mean describes typical error and P95 the difficult tail. Compare left/right
+      eye and region rows to detect asymmetry or directional bias.
+    assumptions: Interpret within the active cohort, sample size and acquisition protocol.
+    limitations: Coordinate frames, screen resolution and reference quality must match. These are model diagnostics, not clinical
+      visual measurements.
+    example: If the angle between reference and prediction is 3.5°, that sample contributes 3.5°; 87 correct regions among
+      100 give regional accuracy=87%.
+  tracking_reading_guide:
+    contexts:
+    - eye_evaluation:tracking
+    category: reading
+    title: How to read an eye-tracking recording
+    question: How complete, temporally stable and interpretable is the recorded gaze trajectory?
+    definition: The panel audits an acquisition, not prediction accuracy. Validity, effective rate and gaps describe sampling;
+      gaze position, speed and jitter describe the recorded trajectory; scene replay links evidence at the same timestamp.
+    formula: Valid rate=valid samples/all samples; effective Hz=1/median(positive Δt); longest gap=max(Δt); normalized speed=sqrt(Δx²+Δy²)/Δt.
+    interpretation: High validity and stable sampling support interpretation. Long gaps or low confidence weaken local conclusions;
+      gaze density records where samples occurred and does not prove attention.
+    assumptions: Interpret within the active cohort, sample size and acquisition protocol.
+    limitations: Fixations and AOI metrics require supplied events/regions. The ocular view is a measurement schematic and
+      the panel is non-clinical.
+    example: For 950 valid samples out of 1,000, valid rate=95%. If median Δt=0.01 s, effective rate=100 Hz; one Δt of 0.25
+      s is reported as a 0.25 s gap.

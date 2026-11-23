@@ -1,0 +1,354 @@
+# Metrics glossary — single source of truth for metric descriptions.
+#
+# Each entry is keyed by a stable metric id and consumed by:
+#   - kpi_card(..., metric_key="<id>")   (server-rendered KPI tooltips)
+#   - the ii("<id>") JS helper            (client-rendered table tooltips)
+#
+# Fields:
+#   label           short display name (optional; falls back to the code label)
+#   description     tooltip text shown to the user, English  (required)
+#   description_es  Spanish tooltip text                      (required)
+#   direction       lower_better | higher_better | neutral   (optional)
+#   formula         concise formula, plain text     (optional)
+#   unit            unit of the value               (optional)
+#   range           expected value range            (optional)
+#   references      list of citations / URLs        (optional)
+#
+# To add a metric: append an entry here. To change a description: edit it here
+# once — it updates every dashboard that references the key.
+
+# ---------------------------------------------------------------------------
+# Age estimation
+# ---------------------------------------------------------------------------
+age_accuracy_window:
+  label: "Accuracy window"
+  description: "Share of predictions whose absolute age error is within the configured number of years. Higher is better."
+  description_es: "Proporción de predicciones cuyo error absoluto de edad queda dentro del número de años configurado. Mayor es mejor."
+  direction: higher_better
+
+age_valid_predictions:
+  label: "Valid predictions"
+  description: "Images with a valid age prediction relative to the total number of input images."
+  description_es: "Imágenes con una predicción de edad válida respecto al total de imágenes de entrada."
+
+age_mae:
+  label: "Age MAE"
+  description: "Mean absolute age error in years: mean(|predicted age − reference age|). Lower is better."
+  description_es: "Error absoluto medio de edad en años: media(|edad predicha − edad de referencia|). Menor es mejor."
+  direction: lower_better
+
+age_error_std:
+  label: "Age error SD"
+  description: "Standard deviation of predicted age minus reference age; it measures error dispersion around the mean."
+  description_es: "Desviación estándar de edad predicha menos edad de referencia; mide la dispersión del error respecto a su media."
+
+age_decision_threshold_y:
+  label: "Y*"
+  description: "Minimum decision threshold Y whose FAR satisfies the configured target; predicted age at or above Y is classified as adult."
+  description_es: "Umbral de decisión mínimo Y cuyo FAR cumple el objetivo configurado; una edad predicha igual o superior a Y se clasifica como adulta."
+
+age_far_at_y:
+  label: "FAR at Y*"
+  description: "False Acceptance Rate at Y*: the share of reference minors whose predicted age is classified as adult."
+  description_es: "Tasa de falsa aceptación en Y*: proporción de menores de referencia cuya edad predicha se clasifica como adulta."
+  direction: lower_better
+
+age_frr_at_y:
+  label: "FRR at Y*"
+  description: "False Rejection Rate at Y*: the share of reference adults whose predicted age is classified as minor."
+  description_es: "Tasa de falso rechazo en Y*: proporción de adultos de referencia cuya edad predicha se clasifica como menor."
+  direction: lower_better
+
+age_accuracy_at_y:
+  label: "Accuracy at Y*"
+  description: "Overall decision accuracy at Y*: (TP + TN) / N. Higher is better."
+  description_es: "Exactitud global de decisión en Y*: (TP + TN) / N. Mayor es mejor."
+  direction: higher_better
+
+age_balanced_accuracy_at_y:
+  label: "Balanced accuracy at Y*"
+  description: "Balanced accuracy at Y*: 1 − (FAR + FRR) / 2, balancing both age-decision classes."
+  description_es: "Exactitud balanceada en Y*: 1 − (FAR + FRR) / 2, equilibrando ambas clases de decisión por edad."
+  direction: higher_better
+
+age_subgroup_mae:
+  label: "Subgroup MAE"
+  description: "Mean absolute age error within the displayed challenge subgroup. Lower is better."
+  description_es: "Error absoluto medio de edad dentro del subgrupo de reto mostrado. Menor es mejor."
+  direction: lower_better
+
+age_subgroup_n:
+  label: "Subgroup N"
+  description: "Number of images represented in the displayed challenge subgroup."
+  description_es: "Número de imágenes representadas en el subgrupo de reto mostrado."
+
+age_band_mae:
+  label: "Age-band MAE"
+  description: "Mean absolute age error for the displayed reference-age band. Lower is better."
+  description_es: "Error absoluto medio de edad para la banda de edad de referencia mostrada. Menor es mejor."
+  direction: lower_better
+
+age_band_n:
+  label: "Age-band N"
+  description: "Number of images represented in the displayed reference-age band."
+  description_es: "Número de imágenes representadas en la banda de edad de referencia mostrada."
+
+# ---------------------------------------------------------------------------
+# Regression
+# ---------------------------------------------------------------------------
+mae:
+  label: "MAE"
+  description: "Mean Absolute Error: the average of |y_pred - y_true|. Lower is better. Expressed in the same units as the target variable."
+  description_es: "Error absoluto medio: la media de |y_pred - y_true|. Menor es mejor. Se expresa en las mismas unidades que la variable objetivo."
+  direction: lower_better
+  formula: "mean(|y_pred - y_true|)"
+
+rmse:
+  label: "RMSE"
+  description: "Root Mean Squared Error. Penalizes large errors more heavily than MAE."
+  description_es: "Raíz del error cuadrático medio. Penaliza los errores grandes más que el MAE."
+  direction: lower_better
+  formula: "sqrt(mean((y_pred - y_true)^2))"
+
+r2:
+  label: "R²"
+  description: "Fraction of the variance in the true values explained by the model. 1 is perfect; 0 is roughly equivalent to always predicting the mean."
+  description_es: "Fracción de la varianza de los valores reales explicada por el modelo. 1 es perfecto; 0 equivale aproximadamente a predecir siempre la media."
+  direction: higher_better
+  range: "(-∞, 1]"
+
+bias:
+  label: "Bias"
+  description: "Average of y_pred - y_true. Positive means the model tends to overestimate; negative means it tends to underestimate."
+  description_es: "Media de y_pred - y_true. Positivo indica tendencia a sobreestimar; negativo, a subestimar."
+  direction: neutral
+  formula: "mean(y_pred - y_true)"
+
+median_ae:
+  label: "Median AE"
+  description: "Median absolute error. Less sensitive to outliers than the MAE."
+  description_es: "Error absoluto mediano. Menos sensible a valores atípicos que el MAE."
+  direction: lower_better
+
+p90_ae:
+  label: "P90 AE"
+  description: "90% of samples have an absolute error less than or equal to this value."
+  description_es: "El 90% de las muestras tiene un error absoluto menor o igual a este valor."
+  direction: lower_better
+
+p95_ae:
+  label: "P95 AE"
+  description: "95% of samples have an absolute error less than or equal to this value."
+  description_es: "El 95% de las muestras tiene un error absoluto menor o igual a este valor."
+  direction: lower_better
+
+max_ae:
+  label: "Max AE"
+  description: "Largest absolute error found in the dataset."
+  description_es: "Mayor error absoluto encontrado en el conjunto de datos."
+  direction: lower_better
+
+mape:
+  label: "MAPE"
+  description: "Mean absolute error divided by the true value. Only interpretable when the true value is not close to zero."
+  description_es: "Error absoluto medio dividido por el valor real. Solo es interpretable cuando el valor real no está cerca de cero."
+  direction: lower_better
+
+smape:
+  label: "SMAPE"
+  description: "Symmetric percentage error that uses both the true value and the prediction in the denominator. Lower is better."
+  description_es: "Error porcentual simétrico que usa el valor real y la predicción en el denominador. Menor es mejor."
+  direction: lower_better
+
+pearson:
+  label: "Pearson"
+  description: "Linear correlation between true value and prediction. It does not replace MAE/RMSE, since a strong correlation can still coexist with a bias."
+  description_es: "Correlación lineal entre el valor real y la predicción. No sustituye a MAE/RMSE: una correlación fuerte puede coexistir con un sesgo."
+  direction: higher_better
+  range: "[-1, 1]"
+
+n_samples:
+  label: "N"
+  description: "Number of valid samples (with numeric values) used to evaluate the model."
+  description_es: "Número de muestras válidas (con valores numéricos) usadas para evaluar el modelo."
+  direction: neutral
+
+wape:
+  label: "WAPE"
+  description: "Weighted Absolute Percentage Error: sum(|error|) / sum(|actual|). More robust than MAPE when actual values are small."
+  description_es: "Error porcentual absoluto ponderado: sum(|error|) / sum(|real|). Más robusto que el MAPE cuando los valores reales son pequeños."
+  direction: lower_better
+  formula: "sum(|y_pred - y_true|) / sum(|y_true|)"
+
+pct_overestimation:
+  label: "% Over"
+  description: "Share of samples where the prediction is higher than the actual value (residual > 0)."
+  description_es: "Proporción de muestras donde la predicción supera al valor real (residuo > 0)."
+  direction: neutral
+
+pct_underestimation:
+  label: "% Under"
+  description: "Share of samples where the prediction is lower than the actual value (residual < 0)."
+  description_es: "Proporción de muestras donde la predicción queda por debajo del valor real (residuo < 0)."
+  direction: neutral
+
+mae_ci:
+  label: "95% CI (MAE)"
+  description: "Bootstrap confidence interval for the MAE: the data is resampled and the outer percentiles of the MAE are taken."
+  description_es: "Intervalo de confianza bootstrap para el MAE: se remuestrean los datos y se toman los percentiles externos del MAE."
+  direction: neutral
+
+# ---------------------------------------------------------------------------
+# Binary classification
+# ---------------------------------------------------------------------------
+eer:
+  label: "EER"
+  description: "Equal Error Rate: the operating point where FAR and FRR are as close as possible. A single-number summary of the trade-off between letting misclassified positives through and rejecting negatives by mistake. Lower is better."
+  description_es: "Tasa de error equilibrado: el punto de operación donde FAR y FRR se acercan al máximo. Resume en un número el compromiso entre dejar pasar positivos mal clasificados y rechazar negativos por error. Menor es mejor."
+  direction: lower_better
+
+threshold:
+  label: "Threshold"
+  description: "Decision cut-off. If the score crosses this value, the sample is classified as the positive class according to the configured direction."
+  description_es: "Punto de corte de decisión. Si la puntuación cruza este valor, la muestra se clasifica como clase positiva según la dirección configurada."
+  direction: neutral
+
+far:
+  label: "FAR"
+  description: "False Acceptance Rate: the share of real positives the system fails to detect as positive. Lower is better."
+  description_es: "Tasa de falsa aceptación: proporción de positivos reales que el sistema no detecta como positivos. Menor es mejor."
+  direction: lower_better
+
+frr:
+  label: "FRR"
+  description: "False Rejection Rate: the share of real negatives the system classifies as positive. Lower is better."
+  description_es: "Tasa de falso rechazo: proporción de negativos reales que el sistema clasifica como positivos. Menor es mejor."
+  direction: lower_better
+
+roc_auc:
+  label: "ROC AUC"
+  description: "Overall ability of the score to separate the positive class from the negative one without fixing a threshold. 1.0 is perfect separation; 0.5 is roughly chance."
+  description_es: "Capacidad global de la puntuación para separar la clase positiva de la negativa sin fijar un umbral. 1.0 es separación perfecta; 0.5 equivale aproximadamente al azar."
+  direction: higher_better
+  range: "[0, 1]"
+
+pr_auc:
+  label: "PR AUC"
+  description: "Area under the Precision-Recall curve. Shows whether the model keeps good precision while recovering the positive class. Especially useful under class imbalance. Higher is better."
+  description_es: "Área bajo la curva Precision-Recall. Indica si el modelo mantiene buena precisión mientras recupera la clase positiva. Especialmente útil con clases desbalanceadas. Mayor es mejor."
+  direction: higher_better
+  range: "[0, 1]"
+
+recall:
+  label: "Recall"
+  description: "Percentage of the positive class the model detects correctly."
+  description_es: "Porcentaje de la clase positiva que el modelo detecta correctamente."
+  direction: higher_better
+
+precision:
+  label: "Precision"
+  description: "Of everything the model flags as the positive class, the percentage that was actually positive."
+  description_es: "De todo lo que el modelo marca como clase positiva, porcentaje que realmente era positivo."
+  direction: higher_better
+
+accuracy:
+  label: "Accuracy"
+  description: "Overall percentage of samples classified correctly. Useful as a global summary, but can be misleading when classes are heavily imbalanced."
+  description_es: "Porcentaje global de muestras clasificadas correctamente. Útil como resumen general, pero puede engañar con clases muy desbalanceadas."
+  direction: higher_better
+
+brier:
+  label: "Brier"
+  description: "Quality of the predicted probabilities. Penalizes confident but wrong predictions. Lower is better; 0 would be perfect calibration."
+  description_es: "Calidad de las probabilidades predichas. Penaliza las predicciones seguras pero erróneas. Menor es mejor; 0 sería calibración perfecta."
+  direction: lower_better
+
+ece:
+  label: "ECE"
+  description: "Expected Calibration Error. Compares the model's confidence with its actual accuracy across score bins. Lower means better calibrated."
+  description_es: "Error de calibración esperado. Compara la confianza del modelo con su acierto real por tramos de puntuación. Menor indica mejor calibración."
+  direction: lower_better
+
+# ---------------------------------------------------------------------------
+# Multiclass classification
+# ---------------------------------------------------------------------------
+balanced_accuracy:
+  label: "Balanced Acc"
+  description: "Balanced accuracy: computes per-class accuracy and then averages it. Useful under class imbalance."
+  description_es: "Exactitud balanceada: calcula el acierto por clase y luego lo promedia. Útil con clases desbalanceadas."
+  direction: higher_better
+
+macro_f1:
+  label: "Macro-F1"
+  description: "Mean of the per-class F1 scores. Penalizes a class doing poorly even if it is a minority."
+  description_es: "Media de los F1 por clase. Penaliza que una clase funcione mal aunque sea minoritaria."
+  direction: higher_better
+
+weighted_f1:
+  label: "Weighted-F1"
+  description: "Mean of the per-class F1 scores weighted by the number of samples in each class."
+  description_es: "Media de los F1 por clase ponderada por el número de muestras de cada clase."
+  direction: higher_better
+
+top_2_accuracy:
+  label: "Top-2"
+  description: "Correct if the true class is among the two highest-scoring classes."
+  description_es: "Se considera acierto si la clase real está entre las dos con mayor puntuación."
+  direction: higher_better
+
+top_3_accuracy:
+  label: "Top-3"
+  description: "Correct if the true class is among the three highest-scoring classes."
+  description_es: "Se considera acierto si la clase real está entre las tres con mayor puntuación."
+  direction: higher_better
+
+confidence_threshold:
+  label: "Conf. TH"
+  description: "If the maximum confidence is below this value, the prediction can be treated as unreliable or rejected."
+  description_es: "Si la confianza máxima queda por debajo de este valor, la predicción puede tratarse como poco fiable o rechazarse."
+  direction: neutral
+
+coverage:
+  label: "Coverage"
+  description: "Percentage of samples that remain accepted at the configured confidence threshold."
+  description_es: "Porcentaje de muestras que siguen aceptadas con el umbral de confianza configurado."
+  direction: neutral
+
+accuracy_accepted:
+  label: "Accepted Acc"
+  description: "Accuracy computed only over the samples whose confidence exceeds the threshold."
+  description_es: "Exactitud calculada solo sobre las muestras cuya confianza supera el umbral."
+  direction: higher_better
+
+rejection_rate:
+  label: "Rejection"
+  description: "Percentage of samples not accepted because they do not exceed the confidence threshold."
+  description_es: "Porcentaje de muestras no aceptadas por no superar el umbral de confianza."
+  direction: neutral
+
+# ---------------------------------------------------------------------------
+# OCR
+# ---------------------------------------------------------------------------
+cer:
+  label: "CER"
+  description: "Character Error Rate: accumulated Levenshtein distance divided by the total length of the normalized ground truth."
+  description_es: "Tasa de error de caracteres: distancia de Levenshtein acumulada dividida por la longitud total de la referencia normalizada."
+  direction: lower_better
+
+word_recall:
+  label: "Recall"
+  description: "Word recall: of all the words expected in the ground truth, the share that appears in the prediction. Duplicates are respected, consuming each predicted word only once."
+  description_es: "Cobertura de palabras: de todas las palabras esperadas en la referencia, proporción que aparece en la predicción. Se respetan duplicados, consumiendo cada palabra predicha una sola vez."
+  direction: higher_better
+
+document_exact_match_rate:
+  label: "Accuracy"
+  description: "Strict document accuracy: share of documents for which every normalized field exactly matches its ground truth."
+  description_es: "Accuracy documental estricta: proporción de documentos en los que todos los campos normalizados coinciden exactamente con su referencia."
+  direction: higher_better
+
+missing_rate:
+  label: "Missing"
+  description: "Non-empty ground-truth fields that the OCR returns empty."
+  description_es: "Campos con referencia no vacía que el OCR devuelve vacíos."
+  direction: lower_better

@@ -1,0 +1,3 @@
+auto_detect_filter_variables: true
+to_include_evaluation: [capture_device, environment, quality_band, issuer_segment, gender]
+to_include_audit: [capture_device, environment, quality_band, issuer_segment, gender]

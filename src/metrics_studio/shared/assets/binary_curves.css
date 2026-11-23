@@ -1,0 +1,53 @@
+/* Fixed desktop Binary diagnostics; keep the five comparison positions. */
+.dm-v2-shell .dm-binary-curves,.dm-v2-shell .dm-binary-threshold {padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;margin-top:16px;}
+.dm-binary-curve-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:stretch;}
+.dm-v2-shell .dm-binary-curve-card,.dm-v2-shell .dm-binary-decision-card,.dm-v2-shell .dm-binary-combined {border:1px solid var(--line);background:var(--card);border-radius:8px;padding:12px 10px 0;min-width:0;box-shadow:none;}
+.dm-v2-shell .dm-binary-curve-card h3 {font-size:16px;margin:0 0 8px;line-height:1.3;}
+.dm-binary-curve-card h3 abbr {display:inline-grid;place-items:center;width:15px;height:15px;border:1px solid var(--line);border-radius:50%;margin-left:6px;color:var(--muted);font-size:12px;font-weight:400;text-decoration:none;cursor:help;}
+.dm-v2-shell .dm-binary-curve-plot {width:100%!important;height:289px!important;min-height:289px!important;}
+.dm-binary-threshold-head {display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:0 2px 10px;}
+.dm-v2-shell .dm-binary-threshold-head h2 {font-size:18px;margin:0;line-height:1.3;}
+.dm-binary-threshold-head p {font-size:12px;color:var(--muted);margin:4px 0 0;}
+.dm-binary-curve-controls {display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.dm-binary-curve-control {display:flex;gap:6px;align-items:center;font-size:12px;white-space:nowrap;}
+.dm-binary-segmented {display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+.dm-v2-shell .dm-binary-curve-control button,.dm-v2-shell .dm-binary-curve-control select {font:inherit;font-size:12px;min-height:32px;height:32px;padding:5px 9px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:5px;cursor:pointer;}
+.dm-v2-shell .dm-binary-segmented button {border:0;border-radius:0;}
+.dm-v2-shell .dm-binary-curve-control button[aria-pressed=true],.dm-v2-shell .dm-binary-marker-toggle[aria-checked=true] {color:#fff;background:#0965d8;}
+.dm-binary-curve-control :is(button,select):focus-visible {outline:2px solid #0965d8;outline-offset:3px;}
+.dm-binary-decision-grid {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;}
+.dm-v2-shell .dm-binary-decision-card h3 {font-size:13px;line-height:1.5;margin:0 0 6px;padding-left:9px;border-left:4px solid var(--model-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dm-binary-decision-summary {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 6px;font-size:11px;font-variant-numeric:tabular-nums;color:var(--muted);margin:0 0 8px;}
+.dm-binary-decision-summary span {white-space:nowrap;}
+.dm-v2-shell .dm-binary-decision-plot {width:100%!important;height:214px!important;min-height:214px!important;}
+.dm-v2-shell .dm-binary-combined-plot {width:100%!important;height:310px!important;min-height:310px!important;}
+.dm-v2-shell .dm-binary-decision-empty {background:var(--soft);border-style:dashed;}
+.dm-v2-shell .dm-binary-decision-empty h3 {border-left-color:transparent;color:var(--muted);font-weight:400;}
+.dm-binary-line-key,.dm-binary-log-note {font-size:12px;color:var(--muted);margin:4px 2px 10px;}
+@media print {.dm-binary-curve-controls {display:none!important;}.dm-binary-curve-card,.dm-binary-decision-card {break-inside:avoid;}}
+
+/* Class distributions and reliability: five fixed model positions. */
+.dm-v2-shell .dm-binary-evidence {padding:12px 10px!important;margin-top:16px;border:1px solid var(--line);box-shadow:none!important;background:var(--card);}
+.dm-binary-evidence .dm-binary-threshold-head {margin-bottom:6px;}
+.dm-binary-evidence-grid {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;}
+.dm-binary-evidence-grid.dm-binary-evidence-focused {grid-template-columns:minmax(0,1fr);}
+.dm-v2-shell .dm-binary-evidence-card {border:1px solid var(--line);background:var(--card);border-radius:6px;min-width:0;padding:10px 6px 0;}
+.dm-v2-shell .dm-binary-evidence-card h3 {display:block;font-size:13px;line-height:1.5;margin:0 6px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dm-binary-evidence-card h3::before {content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--model-color);margin-right:8px;}
+.dm-binary-evidence-summary {display:flex;flex-wrap:wrap;gap:4px 0;margin:0 6px 5px;font-size:11px;font-variant-numeric:tabular-nums;color:var(--muted);min-height:16px;align-content:start;}
+.dm-binary-evidence-summary span {white-space:nowrap;padding:0 6px;border-right:1px solid var(--line);}
+.dm-binary-evidence-summary span:first-child {padding-left:0;}
+.dm-binary-evidence-summary span:last-child {border:0;}
+.dm-binary-evidence-plot {width:100%!important;min-height:0!important;}
+.dm-binary-evidence-key {display:flex;align-items:center;gap:12px;margin:0 2px 9px;font-size:11px;color:var(--muted);}
+.dm-binary-evidence-legend {display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+.dm-binary-evidence-legend span {display:flex;gap:6px;align-items:center;}
+.dm-binary-evidence-legend i {display:inline-block;width:14px;height:10px;border:1px solid;}
+.dm-binary-evidence-key abbr {display:inline-grid;place-items:center;width:16px;height:16px;border:1px solid var(--line);border-radius:50%;font-size:12px;text-decoration:none;cursor:help;}
+.dm-v2-shell .dm-binary-evidence-empty {background:var(--soft);border-style:dashed;}
+.dm-binary-evidence-empty h3 {color:var(--muted);font-weight:400;}
+.dm-binary-evidence-empty h3::before {background:var(--line);}
+.dm-binary-evidence-combined {border:1px solid var(--line);border-radius:6px;padding:8px 8px 0;}
+@media print {.dm-binary-evidence-card {break-inside:avoid;}}
+
+.dm-binary-ideal-key::before {content:"";display:inline-block;width:14px;border-top:1px dashed #8998af;margin-right:6px;}

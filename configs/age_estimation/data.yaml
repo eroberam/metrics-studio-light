@@ -1,0 +1,4 @@
+input_sources:
+  - {path: ../../data_synth/age_estimation/age_estimation_baseline.json, variable_gt: gt_age, variable_pred: pred_age, variable_record_id: record_id, variable_path: path, model_name: Baseline, experiment_id: baseline, role: baseline}
+  - {path: ../../data_synth/age_estimation/age_estimation_experimentA.json, variable_gt: gt_age, variable_pred: pred_age, variable_record_id: record_id, variable_path: path, model_name: Experiment A, experiment_id: experiment_a, role: candidate}
+  - {path: ../../data_synth/age_estimation/age_estimation_experimentB.json, variable_gt: gt_age, variable_pred: pred_age, variable_record_id: record_id, variable_path: path, model_name: Experiment B, experiment_id: experiment_b, role: candidate}
